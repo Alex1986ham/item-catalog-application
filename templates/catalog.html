@@ -15,10 +15,10 @@
 
   <p>{{i.price}}</p>
 
-  <a href='{{url_for('editItem', category_id = category.id, cat_id=i.id) }}'>Edit</a>
+  <a href='{{url_for('editItem', category_id = category.id, items_id=i.id) }}'>Edit</a>
 
   </br>
-  <a href='{{url_for('deleteItem', category_id = category.id, cat_id=i.id) }}'>Delete</a>
+  <a href='{{url_for('deleteItem', category_id = category.id, items_id=i.id) }}'>Delete</a>
 
   </div>
 
