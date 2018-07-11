@@ -42,8 +42,9 @@ def newItem(category_id):
 
 
 
-@app.route('/category/<int:category_id>/edit/', methods=['GET', 'POST'])
-def editItem(category_id):
+@app.route('/category/<int:category_id>/<int:cat_id>/edit/', methods=['GET', 'POST'])
+def editItem(category_id, cat_id):
+    editedItem = session.query(Items).filter_by(id=cat_id).one()
     if request.method == 'POST':
         if request.form['name']:
             editedItem.name = request.form['name']
