@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Category, Items
@@ -37,6 +37,7 @@ def newItem(category_id):
         session.add(newItem)
         session.commit()
         session.close()
+        flash("new item created!")
         return redirect(url_for('ShowCategory', category_id=category_id))
     else:
         return render_template('newitem.html', category_id=category_id)
@@ -53,6 +54,7 @@ def editItem(category_id, items_id):
         session.add(editedItem)
         session.commit()
         session.close()
+        flash("Item has benn edited")
         return redirect(url_for('ShowCategory', category_id=category_id))
     else:
         return render_template('edititem.html', category_id=category_id, items_id=items_id, item=editedItem)
@@ -66,6 +68,7 @@ def deleteItem(category_id, items_id):
         session.delete(itemtoDelete)
         session.commit()
         session.close()
+        flash("Item has been deleted")
         return redirect(url_for('ShowCategory', category_id=category_id))
     else:
         return render_template('deleteitem.html', item=itemtoDelete)
@@ -74,5 +77,6 @@ def deleteItem(category_id, items_id):
 
 
 if __name__ == '__main__':
+    app.secret_key = 'super_secret_key'
     app.debug = True
     app.run(host='0.0.0.0', port=5000)

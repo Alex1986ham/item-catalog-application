@@ -1,16 +1,23 @@
 <html>
+<head>
+    <link rel=stylesheet type=text/css href="{{url_for('static', filename='styles2.css') }}">
+</head>
+
 <body>
   <h1> Add a new Item to chosen category </h1>
 
-  <form action="{{url_for('newItem', category_id=category_id )}}" method= 'POST'>
+  <div class = 'pane'>
 
-  <p>Name:</p>
+    <form action="{{url_for('newItem', category_id=category_id )}}" method= 'POST'>
 
-  <input type='text' size='30' name='name'>
+    <dl>
+      <p>Name:</p>
+      <dd><input type='text' size='30' name='name'></dd>
+    </dl>
 
-  <input type='submit' value='Add'>
+    <input type='submit' value='Add'>
 
-  </form>
-
+    </form>
+  </div>
 </body>
 </html>
