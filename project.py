@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Category, Items
@@ -19,6 +19,17 @@ def home():
     return render_template('catalog.html', category=category, items=items)
 
 
+@app.route('/category/<int:category_id>/items/JSON')
+def ShowCategoryJSON(category_id):
+    category = session.query(Category).filter_by(id=category_id).one()
+    items = session.query(Items).filter_by(category_id=category_id).all()
+    return jsonify(JItems=[i.serialize for i in items])
+
+@app.route('/category/<int:category_id>/items/<int:items_id>/JSON')
+def ItemJSON(category_id, items_id):
+    Item  = session.query(Item=Item.serialize)
+
+
 @app.route('/')
 @app.route('/category/<int:category_id>/items')
 def ShowCategory(category_id):
@@ -29,11 +40,11 @@ def ShowCategory(category_id):
 
 
 
+
 @app.route('/category/<int:category_id>/new/', methods=['GET', 'POST'])
 def newItem(category_id):
     if request.method == 'POST':
-        newItem = Items(
-            name=request.form['name'], category_id=category_id)
+        newItem = Items(name=request.form['name'], description=request.form['description'], price=request.form['price'], category_id=category_id)
         session.add(newItem)
         session.commit()
         session.close()
@@ -51,6 +62,8 @@ def editItem(category_id, items_id):
     if request.method == 'POST':
         if request.form['name']:
             editedItem.name = request.form['name']
+            editedItem.description = request.form['description']
+            editedItem.price = request.form['price']
         session.add(editedItem)
         session.commit()
         session.close()
