@@ -12,11 +12,12 @@ DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
 
-@app.route('/')
-def home():
-    category = session.query(Category).first()
-    items = session.query(Items).filter_by(category_id=Category.id)
-    return render_template('catalog.html', category=category, items=items)
+#@app.route('/')
+#def home():
+#    category = session.query(Category).first()
+#    items = session.query(Items).filter_by(category_id=Category.id)
+#    return render_template('catalog.html', category=category, items=items)
+
 
 
 @app.route('/category/<int:category_id>/items/JSON')
@@ -27,10 +28,69 @@ def ShowCategoryJSON(category_id):
 
 @app.route('/category/<int:category_id>/items/<int:items_id>/JSON')
 def ItemJSON(category_id, items_id):
-    Item  = session.query(Item=Item.serialize)
+    Item  = session.query(Items).filter_by(id=items_id).one()
+    return jsonify(Item=Item.serialize)
 
+@app.route('/category/JSON')
+def categoryJSON():
+    category = session.query(Category).all()
+    return jsonify(category=[r.serialize for r in category])
 
+# Show all categories
 @app.route('/')
+@app.route('/category/')
+def showCategory():
+    category = session.query(Category).all()
+    return render_template('category.html', category=category)
+
+
+@app.route('/category/new/', methods=['GET', 'POST'])
+def newCategory():
+    if request.method == 'POST':
+        newCategory = Category(name=request.form['name'])
+        session.add(newCategory)
+        session.commit()
+        session.close()
+        return redirect(url_for('showCategory'))
+    else:
+        return render_template('newCategory.html')
+
+
+
+@app.route('/category/<int:category_id>/edit', methods=['GET', 'POST'])
+def editCategory(category_id):
+    editedCategory = session.query(Category).filter_by(id=category_id).one()
+    if request.method == 'POST':
+        if request.form['name']:
+            editedCategory.name = request.form['name']
+            return redirect(url_for('showCategory'))
+    else:
+        return render_template('editCategory.html', category=editedCategory)
+
+
+
+@app.route('/category/<int:category_id>/delete/', methods=['GET', 'POST'])
+def deleteCategory(category_id):
+    categoryToDelete = session.query(Category).filter_by(id=category_id).one()
+    if request.method == 'POST':
+        session.delete(categoryToDelete)
+        session.commit()
+        session.close()
+        return redirect(url_for('showCategory', category_id=category_id))
+    else:
+        return render_template('deleteCategory.html', category=categoryToDelete)
+
+
+@app.route('/category/<int:category_id>/')
+def showItems(category_id):
+    category = session.query(Category).filter_by(id=category_id).one()
+    items = session.query(Items).filter_by(category_id=category_id).all()
+    session.close()
+    return render_template('items.html', items=items, category=category)
+
+
+
+#@app.route('/')
 @app.route('/category/<int:category_id>/items')
 def ShowCategory(category_id):
     category = session.query(Category).first()
@@ -49,7 +109,7 @@ def newItem(category_id):
         session.commit()
         session.close()
         flash("new item created!")
-        return redirect(url_for('ShowCategory', category_id=category_id))
+        return redirect(url_for('showItems', category_id=category_id))
     else:
         return render_template('newitem.html', category_id=category_id)
 
@@ -68,7 +128,7 @@ def editItem(category_id, items_id):
         session.commit()
         session.close()
         flash("Item has benn edited")
-        return redirect(url_for('ShowCategory', category_id=category_id))
+        return redirect(url_for('showItems', category_id=category_id))
     else:
         return render_template('edititem.html', category_id=category_id, items_id=items_id, item=editedItem)
 
@@ -82,7 +142,7 @@ def deleteItem(category_id, items_id):
         session.commit()
         session.close()
         flash("Item has been deleted")
-        return redirect(url_for('ShowCategory', category_id=category_id))
+        return redirect(url_for('showItems', category_id=category_id))
     else:
         return render_template('deleteitem.html', item=itemtoDelete)
 

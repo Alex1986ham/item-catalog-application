@@ -1,6 +1,6 @@
 body {
     font-family: sans-serif;
-    background-color: #333333
+    background-color: #red;
 }
 
 h1,
@@ -37,14 +37,14 @@ a {
 }
 
 .pane {
-    
+
     left: 25%;
     border: 2px solid;
     border-radius: 25px;
     padding: 5px;
     margin: 5px;
     border-color: #999999;
-    background-color: #333333
+    background-color: #333333;
 }
 
 .header {
