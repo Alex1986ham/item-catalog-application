@@ -91,11 +91,11 @@ def showItems(category_id):
 
 
 #@app.route('/')
-@app.route('/category/<int:category_id>/items')
-def ShowCategory(category_id):
-    category = session.query(Category).first()
-    items = session.query(Items).filter_by(category_id=Category.id)
-    return render_template('catalog.html', category=category, items=items, category_id=category_id)
+#@app.route('/category/<int:category_id>/items')
+#def ShowCategory(category_id):
+#    category = session.query(Category).first()
+#    items = session.query(Items).filter_by(category_id=Category.id)
+#    return render_template('catalog.html', category=category, items=items, category_id=category_id)
 
 
 

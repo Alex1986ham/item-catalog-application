@@ -1,13 +1,17 @@
-<html>
-<head>
-  <link rel=stylesheet type=text/css href="{{url_for('static', filename='styles4.css')}}">
-</head>
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
+<h2> Are you sure you want to delete {{category.name}} </h2>
 
-<body>
-  <h1> Are you sure you want to delete {{category.name}} </h1>
+
   <form action="{{url_for('deleteCategory', category_id = category.id)}}" method = 'POST'>
-    <input type='submit', value='Delte'>
-  </form>
-  <a href = '{{url_for('showCategory')}}'> Cancel </a>
-</body>
-</html>
+    <button type="submit" class="btn btn-default delete" id="submit" type="submit">
+      <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>Delete
+    </button>
+  <a href = '{{url_for('showCategory')}}'>
+    <button class="btn btn-default delete">
+      <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Cancel
+    </button>
+  </a>
+</form>
+{% endblock %}

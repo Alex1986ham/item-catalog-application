@@ -1,24 +1,55 @@
-<html>
-  <head>
-  <link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles4.css') }}">
-  </head>
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
+  <div class="row top-menu">
+    <div class="col-md-10"></div>
+    <div class="col-md-2 text-right"></div>
 
-  <body>
-    <div calss = 'pane'>
-      <h1>Categories</h1>
+    <div class="row divider blue">
+      <div class="col-md-12"></div>
+    </div>
+    <div class="row banner main">
+      <div class="col-md-1"></div>
+      <div class="col-md-11 padding-none">
+        <h1>Categories</h1>
+      </div>
+    </div>
 
-      <a href="{{url_for('newCategory')}}" > <h3> Create a New Category </h3> </a>
+    <div class = 'flash'>
+      {% with messages = get_flashed_messages() %}
+      {% if messages %}
+      <ul>
+        {% for message in messages %}
+        <li> <strong> {{ message }} </strong> </li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+      {% endwith %}
+    </div>
 
-      {% for category in category %}
+    <div class="Row padding-top passing-bottom">
+      <div class="col-md-1"></div>
+      <div class="col-md-10 padding-none">
+        <a href="{{url_for('newCategory')}}">
+          <button class="btn btn-default" id="new-category">
+            <span class="glyphicon glyphicon-cutlery" aria-hidden="true"></span>Add Category
+          </button>
+        </a>
+      </div>
+      <div class="col-md-1"></div>
+    </div>
 
-      <a href = "{{url_for('showItems', category_id = category.id)}}"> <p>{{category.name}}</p></a>
+    {% for category in category %}
 
-      <p><a href = "{{url_for('editCategory', category_id = category.id)}}">Edit Category</a></p>
-
-      <p> <a href = "{{url_for('deleteCategory', category_id = category.id)}}">Delete Category</a></p>
+      <a href = "{{url_for('showItems', category_id = category.id)}}">
+        <div class="row">
+          <div class="col-md-1"></div>
+          <div class="col-md-10 category-list">
+            <h3>{{category.name}}</h3>
+          </div>
+          <div class="col-md-1"></div>
+        </div>
+      </a>
 
       {% endfor %}
-
-    </div>
-  </body>
-</html
+      {% endblock %}
