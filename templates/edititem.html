@@ -1,33 +1,74 @@
+<!--
+<html>
+<head>
+	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
+	</head>
+	<body>
+
+<h1> Edit Menu Item </h1>
+
+<form action="{{ url_for('editItem',category_id = category_id, items_id=item.id)}}" method = 'post'>
+
+<dl>
+	<dt>Name:</dt>
+		<dd><input type ='text' size='30' name='name' placeholder = '{{item.name }}'></dd>
+	<dt>Description:</dt>
+		<dd><textarea name = 'description' rows='5' cols='40' placeholder = '{{item.description }}'></textarea></dd>
+	<dt>Price:</dt>
+		<dd><input type = 'text' size = '8' name='price' placeholder = '{{item.price}}'></dd>
+	<dt>Course:</dt>
+
+
+
+</dl>
+
+
+<input type='submit' value='Edit'>
+
+<a href = '{{url_for('showItems', category_id = category_id)}}'> Cancel </a>
+</form>
+</body>
+</html>
+-->
+
+
+
 {% extends "main.html" %}
 {% block content %}
 {% include "header.html" %}
-<div class="row divider green">
-  <div class="col-md-12"></div>
-</div>
-<div class="row banner menu">
-  <div class="col-md-11 col-md-offset-1 padding-none">
-    <h1> Edit Item </h1>
-  </div>
-</div>
-<div class="row">
-  <div class="col-md-6 col-md-offset-1 padding-top">
-    <form action= "url_for('editItem', category_id=category.id, items_id=item.id)" method = 'POST'>
-      <div class="form-group">
-        <label 
+	<div class="row divider green">
+		<div class="col-md-12"></div>
+	</div>
+	<div class="row banner menu">
+		<div class="col-md-11 col-md-offset-1 padding-none">
+			<h1>Edit Menu Item</h1>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-6 col-md-offset-1 padding-top">
+			<form action="{{ url_for('editItem',category_id = category_id, items_id=item.id)}}" method = "post">
+				<div class="form-group">
+					<label for="name">Name:</label>
+					<input type ="text" maxlength="100" class="form-control" name="name" value="{{item.name }}">
 
-      <p>Name:</p>
-      <input type = 'text' size='30' name= 'name' placeholder = '{{item.name}}'>
-      <p>Description:</p>
-      <input type='text' size='30' name = 'description' placeholder='{{item.description}}'>
-      <p>Price:</p>
-      <input type = 'text' size = '30' name='price' placeholder='{{item.price}}'>
-      <dt>
+					<label for="description">Description:</label>
+					<textarea class="form-control" maxlength="250" rows="3" name="description">{{item.description}}</textarea>
+
+					<label for="price">Price:</label>
+					<div class="input-group">
+						<div class="input-group-addon">$</div>
+						<input type ="text" maxlength="10" class="form-control" name="price" value="{{item.price}}">
+					</div>
 
 
-  <input type='submit' value='Edit'>
-
-  <a href= '{{url_for('showItems', category_id= item.category_id)}}' >Cancel</a>
-  </form>
-</body>
-
-</html>
+					<button type="submit" class="btn btn-default" id="submit" type="submit">
+					<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>Save</button>
+					<a href = '{{url_for('showCategory')}}'>
+						<button class="btn btn-default delete">
+						<span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Cancel</button>
+					</a>
+				</div>
+			</form>
+		</div>
+	</div>
+{% endblock %}

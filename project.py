@@ -127,7 +127,7 @@ def editItem(category_id, items_id):
         session.add(editedItem)
         session.commit()
         session.close()
-        flash("Item has benn edited")
+        flash("Item has been edited")
         return redirect(url_for('showItems', category_id=category_id))
     else:
         return render_template('edititem.html', category_id=category_id, items_id=items_id, item=editedItem)
